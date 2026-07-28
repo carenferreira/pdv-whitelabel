@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\CashFlowType;
+use App\Enums\MovementType;
+use App\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -23,6 +26,9 @@ class CashFlow extends Model
 
     protected $casts = [
         'value'=>'integer',
+        'type' => CashFlowType::class,
+        'payment_method' => PaymentMethod::class,
+        'movement_type' => MovementType::class,
         'source_id'=>'integer',
     ];
 

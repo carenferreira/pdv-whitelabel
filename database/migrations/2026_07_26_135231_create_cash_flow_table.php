@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('cash_register_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained();
             $table->string('type'); //entrada ou saída
-            $table->string('paymant_method'); //dinheiro, débito, crédito, pix
+            $table->string('payment_method'); //dinheiro, débito, crédito, pix
             $table->string('movement_type'); //venda, reenbolso, despesa, dinheiro para troco
             $table->integer('value');
             $table->text('description')->nullable();

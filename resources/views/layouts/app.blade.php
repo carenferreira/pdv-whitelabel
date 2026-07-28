@@ -21,7 +21,7 @@
         </x-layout.nav-item>
 
         {{-- Financeiro --}}
-        <x-layout.nav-group label="Financeiro" :active="request()->is('caixa*', 'fluxo-caixa*')">
+        <x-layout.nav-group label="Financeiro" :active="request()->is('caixa*', 'fluxo*')">
             <x-slot:icon>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182.553-.439 1.278-.659 2.003-.659.725 0 1.45.22 2.003.659l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -29,7 +29,7 @@
             </x-slot:icon>
 
             <x-layout.nav-item href="/caixa">Caixa</x-layout.nav-item>
-            <x-layout.nav-item href="/fluxo-caixa">Fluxo de Caixa</x-layout.nav-item>
+            <x-layout.nav-item href="/caixa/fluxo">Fluxo de Caixa</x-layout.nav-item>
         </x-layout.nav-group>
 
         {{-- Pedidos --}}
@@ -99,5 +99,31 @@
         </main>
     </div>
 
+    {{-- Máscara de moeda para inputs com data-currency --}}
+    <script>
+        document.addEventListener('input', function (e) {
+            const input = e.target.closest('[data-currency]');
+            if (!input) return;
+
+            let digits = input.value.replace(/\D/g, '');
+            if (digits.length === 0) {
+                input.value = '';
+                return;
+            }
+            input.value = (parseInt(digits) / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+        });
+
+        document.addEventListener('submit', function (e) {
+            const form = e.target;
+            form.querySelectorAll('[data-currency]').forEach(function (input) {
+                const raw = input.value.replace(/[R$\s.]/g, '').replace(',', '');
+                input.value = parseInt(raw) || 0;
+            });
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>
